@@ -1,24 +1,29 @@
 package com.yellow;
+
 import java.awt.*;
+import java.util.List;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 /**
  *
- *@Description TODO
+ *@Description 坦克战场
  *@Author backen
  *@Date 2021/2/5 10:15
  *
  */
 public class TankFrame extends Frame {
-    int x = 200,y = 200;
-    Dir dir = Dir.DOWN;
-    private static final int SPEED = 10;
+
+    static final int GAME_WIDTH = 1200;
+    static final int GAME_HEIGHT = 675;
+    Tank mytank = new Tank(200,200, Dir.DOWN,this);
+    List<Bullet> bullets = new ArrayList<>();
 
     public TankFrame() throws HeadlessException {
-        setSize(1200,675);
+        setSize(GAME_WIDTH,GAME_HEIGHT);
         setVisible(true);//设置可见
         setTitle("tank_war");
         setResizable(false);//设置不可改变大小
@@ -31,28 +36,29 @@ public class TankFrame extends Frame {
                 System.exit(0);
             }
         });
+    }
 
-
+    Image offScreenImange = null;
+    @Override
+    public void update(Graphics g) {
+        if(offScreenImange == null){
+            offScreenImange = this.createImage(GAME_WIDTH,GAME_HEIGHT);
+        }
+        Graphics gOffScreen = offScreenImange.getGraphics();
+        Color c = gOffScreen.getColor();
+        gOffScreen.setColor(Color.WHITE);
+        gOffScreen.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        paint(gOffScreen);
+        gOffScreen.setColor(c);
+        g.drawImage(offScreenImange,0,0,null);
     }
 
     @Override
     public void paint(Graphics g) {
-        g.fillRect(x,y,30,30);
-        switch (dir){
-            case LEFT:
-                x -= SPEED;
-                break;
-            case RIGHT:
-                x += SPEED;
-                break;
-            case UP:
-                y -= SPEED;
-                break;
-            case DOWN:
-                y += SPEED;
-                break;
+        mytank.paint(g);
+        for (Bullet bullet : bullets ){
+            bullet.paint(g);
         }
-
 
     }
 //  定制坦克的键盘适配器
@@ -99,16 +105,25 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = false;
                     break;
+                case KeyEvent.VK_CONTROL:
+                    mytank.fire();
                 default:
                     break;
             }setMainTankDir();
-        }
 
+        }
+//      设置主战坦克方向
         private void setMainTankDir(){
-            if(bL) dir = Dir.LEFT;
-            if(bR) dir = Dir.RIGHT;
-            if(bU) dir = Dir.UP;
-            if(bD) dir = Dir.DOWN;
+            //如果四个方向键 都没有按下，moving=false; return
+            if( !bL && !bR && !bU && !bD) mytank.setMoving(false);
+            else {
+                mytank.setMoving(true);
+                if(bL) mytank.setDir (Dir.LEFT);
+                if(bR) mytank.setDir(Dir.RIGHT);
+                if(bU) mytank.setDir(Dir.UP);
+                if(bD) mytank.setDir(Dir.DOWN);
+            }
+
         }
     }
 

@@ -10,9 +10,12 @@ import java.awt.*;
 public class Bullet {
     private int x,y;
     private Dir dir;
+    TankFrame tf;
     private static final int SPEED = 10;
     private static final int WIDTH = 10;
     private static final int HEIGHT = 10;
+//关于 static，该属性 被private修饰之后，是否还能别其他对象调用？
+    private  /*static*/ boolean live = true;
 
     public int getX() {
         return x;
@@ -38,10 +41,11 @@ public class Bullet {
         this.dir = dir;
     }
 
-    public Bullet(int x, int y, Dir dir) {
+    public Bullet(int x, int y, Dir dir,TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf = tf;
     }
 
     public void paint(Graphics g){
@@ -51,6 +55,9 @@ public class Bullet {
         g.setColor(c);
 
         moving();
+        if(!live){
+            tf.bullets.remove(this);
+        }
 
     }
 
@@ -68,6 +75,11 @@ public class Bullet {
                 case DOWN:
                     y += SPEED;
                     break;
+            }
+            if(x < 0 || y < 0 || x > tf.GAME_WIDTH || y > tf.GAME_HEIGHT) {
+                live = false;
+            }else {
+                live = true;
             }
         }
 }

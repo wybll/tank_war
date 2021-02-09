@@ -1,5 +1,6 @@
 package com.yellow;
 
+
 import java.awt.*;
 import java.util.List;
 import java.awt.event.KeyAdapter;
@@ -7,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -19,8 +21,11 @@ public class TankFrame extends Frame {
 
     static final int GAME_WIDTH = 1200;
     static final int GAME_HEIGHT = 675;
-    Tank mytank = new Tank(200,200, Dir.DOWN,this);
-    List<Bullet> bullets = new ArrayList<>();
+
+    public List<Tank> tanks = new CopyOnWriteArrayList<>();
+    public List<Bullet> bullets = new CopyOnWriteArrayList<>();
+
+    Tank mytank = new Tank(200,200, Dir.UP,this);
 
     public TankFrame() throws HeadlessException {
         setSize(GAME_WIDTH,GAME_HEIGHT);
@@ -38,6 +43,8 @@ public class TankFrame extends Frame {
         });
     }
 
+
+    //用来消除屏幕闪烁
     Image offScreenImange = null;
     @Override
     public void update(Graphics g) {
@@ -54,16 +61,28 @@ public class TankFrame extends Frame {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public synchronized void paint(Graphics g) {
+
         mytank.paint(g);
+
         Color c  = g.getColor();
         g.setColor(Color.BLUE);
         g.drawString("当前子弹数量："+bullets.size(),10,50);
+        g.drawString("当前敌人数量："+tanks.size(),10,70);
         g.setColor(c);
 
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).paint(g);
         }
+        for (int i = 0; i < tanks.size(); i++) {
+            tanks.get(i).paint(g);
+        }
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j < tanks.size(); j++) {
+                bullets.get(i).collideWith(tanks.get(i));
+            }
+        }
+
 
     }
 //  定制坦克的键盘适配器

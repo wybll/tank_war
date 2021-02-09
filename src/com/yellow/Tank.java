@@ -11,11 +11,12 @@ import java.util.ArrayList;
 public class Tank {
     private int x,y;
     private Dir dir;
+    private boolean living = true;
     private TankFrame tf;
     private static final int SPEED = 5;
     private boolean moving = false;
-    private static final int WIDTH = 30;
-    private static final int HEIGHT = 30;
+    public  int WIDTH = ResourceImage.tankL.getWidth();
+    public  int HEIGHT = ResourceImage.tankL.getHeight();
 
     public Tank(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
@@ -49,12 +50,24 @@ public class Tank {
     }
 
     public void paint(Graphics g){
+        if(!living){
+            tf.tanks.remove(this);
+        }
 
-        Color c = g.getColor();
-        g.setColor(Color.BLACK);
-        g.fillRect(x,y,WIDTH,HEIGHT);
-        g.setColor(c);
-
+        switch (dir){
+            case LEFT:
+                g.drawImage(ResourceImage.tankL,x,y,null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceImage.tankR,x,y,null);
+                break;
+            case UP:
+                g.drawImage(ResourceImage.tankU,x,y,null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceImage.tankD,x,y,null);
+                break;
+        }
         moving();
 
     }
@@ -87,7 +100,14 @@ public class Tank {
 
     }
 
-    public void fire() {
-        tf.bullets.add(new Bullet(this.x+10,this.y+10,this.dir,this.tf));
+    public synchronized void fire() {
+        int bx = this.x + WIDTH/2 - Bullet.WIDTH;
+        int by = this.y + HEIGHT/2 - Bullet.HEIGHT;
+
+        tf.bullets.add(new Bullet(bx,by,this.dir,this.tf));
+    }
+
+    public void die() {
+        living = false;
     }
 }

@@ -61,7 +61,7 @@ public class TankFrame extends Frame {
     }
 
     @Override
-    public synchronized void paint(Graphics g) {
+    public  void paint(Graphics g) {
 
         mytank.paint(g);
 
@@ -79,7 +79,7 @@ public class TankFrame extends Frame {
         }
         for (int i = 0; i < bullets.size(); i++) {
             for (int j = 0; j < tanks.size(); j++) {
-                bullets.get(i).collideWith(tanks.get(i));
+                bullets.get(i).collideWith(tanks.get(j));
             }
         }
 

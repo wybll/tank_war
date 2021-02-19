@@ -2,6 +2,7 @@ package com.yellow;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @Description 坦克类
@@ -14,9 +15,10 @@ public class Tank {
     private boolean living = true;
     private TankFrame tf;
     private static final int SPEED = 5;
-    private boolean moving = false;
-    public  int WIDTH = ResourceImage.tankL.getWidth();
-    public  int HEIGHT = ResourceImage.tankL.getHeight();
+    private boolean moving = true;
+    private Random random = new Random();
+    public  static int WIDTH = ResourceImage.tankL.getWidth();
+    public  static int HEIGHT = ResourceImage.tankL.getHeight();
 
     public Tank(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
@@ -24,7 +26,13 @@ public class Tank {
         this.dir = dir;
         this.tf = tf;
     }
-
+    public Tank(int x, int y, Dir dir, TankFrame tf,boolean moving) {
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.tf = tf;
+        this.moving = moving;
+    }
     public int getX() {
         return x;
     }
@@ -81,21 +89,22 @@ public class Tank {
     }
 
     private void moving() {
-        if(moving){
-            switch (dir){
-                case LEFT:
-                    x -= SPEED;
-                    break;
-                case RIGHT:
-                    x += SPEED;
-                    break;
-                case UP:
-                    y -= SPEED;
-                    break;
-                case DOWN:
-                    y += SPEED;
-                    break;
-            }
+        if(!moving){
+            return;
+        }
+        switch (dir){
+            case LEFT:
+                x -= SPEED;
+                break;
+            case RIGHT:
+                x += SPEED;
+                break;
+            case UP:
+                y -= SPEED;
+                break;
+            case DOWN:
+                y += SPEED;
+                break;
         }
 
     }

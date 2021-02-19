@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -17,11 +16,12 @@ public class ImageTest {
     @Test
     public void test(){
             try{
-               //BufferedImage image = ImageIO.read(ImageTest.class.getClassLoader().getResourceAsStream("images/TankL.gif"));
-                //Assert.assertNotNull(image);
-            }catch(Exception e)
-        {
+               BufferedImage image = ImageIO.read(ImageTest.class.getClassLoader().getResourceAsStream("image/tankL.gif"));
+                Assert.assertNotNull(image);
 
-        }
+            }catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
     }
 }

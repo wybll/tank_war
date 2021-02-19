@@ -9,9 +9,12 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         TankFrame tankFrame = new TankFrame();
+        int x,y;
 
         for (int i = 0; i < 5; i++) {
-            tankFrame.tanks.add(new Tank(100+i*80,50,Dir.DOWN,tankFrame));
+            x = (int)(Math.random()*900);
+            y = (int)(Math.random()*500 );
+            tankFrame.tanks.add(new Tank(x,y,Dir.DOWN,tankFrame));
         }
 
         while(true) {

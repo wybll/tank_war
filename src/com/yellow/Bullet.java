@@ -12,8 +12,8 @@ public class Bullet {
     private Dir dir;
     TankFrame tf;
     private static final int SPEED = 10;
-    public static final int WIDTH = ResourceImage.bulletL.getWidth();
-    public static final int HEIGHT = ResourceImage.bulletL.getHeight();
+    public static  int WIDTH = ResourceImage.bulletL.getWidth();
+    public static  int HEIGHT = ResourceImage.bulletL.getHeight();
 //关于 static，该属性 被private修饰之后，是否还能别其他对象调用？
     private  /*static*/ boolean living = true;
 
@@ -94,14 +94,12 @@ public class Bullet {
             }
             if(x < 0 || y < 0 || x > tf.GAME_WIDTH || y > tf.GAME_HEIGHT) {
                 living = false;
-            }else {
-                living = true;
             }
         }
 
     public void collideWith(Tank tank) {
-        Rectangle rectB = new Rectangle(this.x,this.y,WIDTH,HEIGHT);
-        Rectangle rectT= new Rectangle(tank.getX(),tank.getY(),tank.WIDTH,tank.HEIGHT);
+        Rectangle rectB = new Rectangle(this.x,this.y,Bullet.WIDTH,Bullet.HEIGHT);
+        Rectangle rectT= new Rectangle(tank.getX(),tank.getY(),Tank.WIDTH,Tank.HEIGHT);
         if (rectB.intersects(rectT)){
             tank.die();
             this.die();

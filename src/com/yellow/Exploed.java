@@ -7,7 +7,7 @@ import java.awt.*;
  * @Author backen
  * @Date 2021/2/19 16:45
  */
-public class Exploeds {
+public class Exploed {
 
     private int x,y;
 
@@ -18,7 +18,7 @@ public class Exploeds {
 
     int temp = 0 ;
 
-    public Exploeds(int x, int y, TankFrame tf) {
+    public Exploed(int x, int y, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.tf = tf;
@@ -33,7 +33,8 @@ public class Exploeds {
             //temp++;
         }*/
         g.drawImage(ResourceImage.exploeds[temp++],x,y,null);
-        if (temp >= ResourceImage.exploeds.length) temp = 0;
+        if (temp >= ResourceImage.exploeds.length)
+            tf.exploeds.remove(this);//如果16张图片画完了，就从集合中把该图片移除掉
     }
 
 }

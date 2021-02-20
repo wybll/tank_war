@@ -23,10 +23,10 @@ public class TankFrame extends Frame {
 
     public List<Tank> tanks = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
+    List<Exploed> exploeds = new ArrayList<>();
+    Tank mytank = new Tank(200,200, Dir.UP,this,false,Group.GOOD);
 
-
-    Tank mytank = new Tank(200,200, Dir.UP,this,false);
-    Exploeds exploeds = new Exploeds(100,100,this);
+    Exploed exploed = new Exploed(100,100,this);
 
     public TankFrame() throws HeadlessException {
         setSize(GAME_WIDTH,GAME_HEIGHT);
@@ -98,7 +98,10 @@ public class TankFrame extends Frame {
                 bullets.get(i).collideWith(tanks.get(j));
             }
         }
-        exploeds.paint(g);
+        for (int i = 0; i < exploeds.size(); i++) {
+            exploeds.get(i).paint(g);
+        }
+
 
     }
 //  定制坦克的键盘适配器

@@ -12,8 +12,8 @@ public class Bullet {
     private Dir dir;
     TankFrame tf;
     private static final int SPEED = 20;
-    public static  int WIDTH = ResourceImage.bulletL.getWidth();
-    public static  int HEIGHT = ResourceImage.bulletL.getHeight();
+    public static  int WIDTH = ResourceMgr.bulletL.getWidth();
+    public static  int HEIGHT = ResourceMgr.bulletL.getHeight();
 //关于 static，该属性 被private修饰之后，是否还能别其他对象调用？
     private  /*static*/ boolean living = true;
     private Group group = Group.BAD;
@@ -64,6 +64,8 @@ public class Bullet {
         rectB.y = this.y;
         rectB.width = WIDTH;
         rectB.height = HEIGHT;
+
+        tf.bullets.add(this);
     }
 
     public void paint(Graphics g){
@@ -77,16 +79,16 @@ public class Bullet {
 
         switch (dir){
             case LEFT:
-                g.drawImage(ResourceImage.bulletL,x,y,null);
+                g.drawImage(ResourceMgr.bulletL,x,y,null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceImage.bulletR,x,y,null);
+                g.drawImage(ResourceMgr.bulletR,x,y,null);
                 break;
             case UP:
-                g.drawImage(ResourceImage.bulletU,x,y,null);
+                g.drawImage(ResourceMgr.bulletU,x,y,null);
                 break;
             case DOWN:
-                g.drawImage(ResourceImage.bulletD,x,y,null);
+                g.drawImage(ResourceMgr.bulletD,x,y,null);
                 break;
         }
 

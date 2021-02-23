@@ -1,7 +1,5 @@
 package com.yellow;
 
-import org.junit.rules.TestName;
-
 import java.awt.*;
 import java.util.Random;
 
@@ -11,19 +9,21 @@ import java.util.Random;
  * @Date 2021/2/5 23:11
  */
 public class Tank {
-    private int x,y;
-    private Dir dir;
-    private Group group = Group.BAD;
+    int x,y;
+    Dir dir;
+    Group group;
     private boolean living = true;
-    private TankFrame tf;
+    TankFrame tf;
     private static final int SPEED = 5;
     private boolean moving = true;
     private Random random = new Random();
-    public  static int WIDTH = ResourceImage.tankL.getWidth();
-    public  static int HEIGHT = ResourceImage.tankL.getHeight();
+    public  static int WIDTH = ResourceMgr.tankL.getWidth();
+    public  static int HEIGHT = ResourceMgr.tankL.getHeight();
     Rectangle rectT= new Rectangle();
+    FireStrategy fs ;
 
-    public Tank(int x, int y, Dir dir, TankFrame tf,boolean moving,Group group) {
+
+    public Tank(int x, int y, Dir dir, TankFrame tf,boolean moving,Group group)  {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -35,6 +35,22 @@ public class Tank {
         rectT.y = this.y;
         rectT.width = WIDTH;
         rectT.height = HEIGHT;
+
+        if (this.group == Group.GOOD) {
+            String goodFSName = ConfigMgr.get("goodFS");
+            try {
+                fs = (FireStrategy) Class.forName(goodFSName).newInstance();
+            } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }else {
+            String badFSName = ConfigMgr.get("badFS");
+            try {
+                fs = (FireStrategy) Class.forName(badFSName).newInstance();
+            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
     public int getX() {
         return x;
@@ -67,16 +83,16 @@ public class Tank {
 
         switch (dir){
             case LEFT:
-                g.drawImage(ResourceImage.tankL,x,y,null);
+                g.drawImage(ResourceMgr.tankL,x,y,null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceImage.tankR,x,y,null);
+                g.drawImage(ResourceMgr.tankR,x,y,null);
                 break;
             case UP:
-                g.drawImage(ResourceImage.tankU,x,y,null);
+                g.drawImage(ResourceMgr.tankU,x,y,null);
                 break;
             case DOWN:
-                g.drawImage(ResourceImage.tankD,x,y,null);
+                g.drawImage(ResourceMgr.tankD,x,y,null);
                 break;
         }
         moving();
@@ -140,10 +156,7 @@ public class Tank {
     }
 
     public synchronized void fire() {
-        int bx = this.x + WIDTH/2 - Bullet.WIDTH;
-        int by = this.y + HEIGHT/2 - Bullet.HEIGHT;
-
-        tf.bullets.add(new Bullet(bx,by,this.dir,this.tf,this.group));
+        fs.fire(this);
     }
 
     public void die() {

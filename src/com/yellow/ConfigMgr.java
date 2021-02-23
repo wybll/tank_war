@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * @Description TODO
+ * @Description 配置加载类（单例）
  * @Author backen
  * @Date 2021/2/20 16:25
  */
 public class ConfigMgr {
 
-    static  Properties property = new Properties();
+    private static  Properties property = new Properties();
+    //单例模式步骤一
+    private static  final ConfigMgr configMgr = new  ConfigMgr();
+
     static {
         try {
             property.load(ConfigMgr.class.getClassLoader().getResourceAsStream("config.properties"));
@@ -18,15 +21,11 @@ public class ConfigMgr {
             e.printStackTrace();
         }
     }
+    //单例模式步骤二
+    private ConfigMgr(){}
 
-    private static ConfigMgr configMgr;
-
-    private ConfigMgr(){
-
-    }
-
+    //单例模式步骤三
     public static ConfigMgr getInstance(){
-        if (configMgr == null) configMgr = new ConfigMgr();
         return configMgr;
     }
 

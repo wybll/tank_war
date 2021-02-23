@@ -13,8 +13,8 @@ public class Exploed {
 
     TankFrame tf;
 
-    public static  int WIDTH = ResourceImage.exploeds[0].getWidth();
-    public static  int HEIGHT = ResourceImage.exploeds[0].getHeight();
+    public static  int WIDTH = ResourceMgr.exploeds[0].getWidth();
+    public static  int HEIGHT = ResourceMgr.exploeds[0].getHeight();
 
     int temp = 0 ;
 
@@ -32,8 +32,8 @@ public class Exploed {
             g.drawImage(ResourceImage.exploeds[i],x,y,null);
             //temp++;
         }*/
-        g.drawImage(ResourceImage.exploeds[temp++],x,y,null);
-        if (temp >= ResourceImage.exploeds.length)
+        g.drawImage(ResourceMgr.exploeds[temp++],x,y,null);
+        if (temp >= ResourceMgr.exploeds.length)
             tf.exploeds.remove(this);//如果16张图片画完了，就从集合中把该图片移除掉
     }
 

@@ -9,7 +9,7 @@ import java.io.IOException;
  * @Author backen
  * @Date 2021/2/9 15:32
  */
-public class ResourceImage {
+public class ResourceMgr {
 
     public static BufferedImage tankL,tankR,tankU,tankD;
     public static BufferedImage bulletL,bulletR,bulletU,bulletD;
@@ -17,9 +17,17 @@ public class ResourceImage {
     //开辟 ‘爆炸图片’内存数组，将图片从硬盘中依次加载至内存中
     public static BufferedImage[] exploeds = new BufferedImage[16];
 
+    private ResourceMgr(){};
+
+    private final static ResourceMgr resourceMgr = new ResourceMgr(){};
+
+    public static ResourceMgr getInstance(){
+        return resourceMgr;
+    }
+
     static {
             try{
-                ClassLoader cl = ResourceImage.class.getClassLoader();
+                ClassLoader cl = ResourceMgr.class.getClassLoader();
 
                 tankL = ImageIO.read(cl.getResourceAsStream("image/TankL.gif"));
                 tankR = ImageIO.read(cl.getResourceAsStream("image/TankR.gif"));
